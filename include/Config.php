@@ -5,8 +5,10 @@
 define('URL_IMAGES', 'https://bitapi.arxsmart.com/uploads/images/');
 define('URL_RESOURCES', 'http://bitapi.arxsmart.com/uploads/default/');
 
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', 'agosto27'); 
+// define('DB_USERNAME', 'root');
+// define('DB_PASSWORD', 'agosto27'); 
+define('DB_USERNAME', 'admin');
+define('DB_PASSWORD', 'Acc@ssC@ntrol!2020'); 
 define('DB_HOST', 'localhost:3306');
 define('DB_NAME', 'ac_syc');
 
