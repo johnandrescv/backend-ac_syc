@@ -765,7 +765,7 @@ $app->get('/logs', 'authenticateAPIKey', function() use ($app) {
 -------------
 */
 
-$app->post('/system/socios', function() use ($app) {
+$app->put('/system/socios', function() use ($app) {
     $response = array();
     $db = new DbHandler();
     verifyRequiredParams(array('data'));
