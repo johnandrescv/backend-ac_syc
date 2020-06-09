@@ -630,7 +630,7 @@ class DbHandler {
 
     private function deactivateUser($id_tipo) {
         $response = array();
-        $stmt = $this->conn->prepare("UPDATE usuarios SET estado = 'E' WHERE tipo = ?");
+        $stmt = $this->conn->prepare("UPDATE usuarios SET estado = 'E' WHERE id_tipo = ?");
         $stmt->bind_param("s", $id_tipo);
         $result = $stmt->execute();
         //printf("Error: %s.\n", $stmt->error);
