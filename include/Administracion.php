@@ -595,6 +595,55 @@ class DbHandler {
 
     /* 
     ------------- 
+    ---------- SOCIOS
+    -------------
+    */
+
+    public function gestionSocios($data) {
+        $this->deactivateUser(1);
+        $socios = json_decode($data);
+        foreach($socios as $socio) {
+            $existe = $this->searchUsuariosByDNI($socio["dni"]);
+            if($existe === false) {
+                $this->createUsuario($socio["dni"], $socio["nombres"], 2);
+            }else{
+                $this->activateUser($existe["id_usuario"]);
+            }
+        }
+        return true;
+    }
+
+    public function activateUser($id) {
+        $response = array();
+        $stmt = $this->conn->prepare("UPDATE usuarios SET estado = 'A' WHERE id_usuario = ?");
+        $stmt->bind_param("s", $id);
+        $result = $stmt->execute();
+        //printf("Error: %s.\n", $stmt->error);
+        $stmt->close();
+
+        if ($result) {
+            return OPERATION_SUCCESSFUL;
+        } else {
+            return OPERATION_FAILED;
+        }
+    }
+
+    private function deactivateUser($id_tipo) {
+        $response = array();
+        $stmt = $this->conn->prepare("UPDATE usuarios SET estado = 'E' WHERE tipo = ?");
+        $stmt->bind_param("s", $id_tipo);
+        $result = $stmt->execute();
+        //printf("Error: %s.\n", $stmt->error);
+        $stmt->close();
+
+        if ($result) {
+            return OPERATION_SUCCESSFUL;
+        } else {
+            return OPERATION_FAILED;
+        }
+    }
+    /* 
+    ------------- 
     ---------- INVITACIONES
     -------------
     */

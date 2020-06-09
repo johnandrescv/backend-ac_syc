@@ -765,13 +765,14 @@ $app->get('/logs', 'authenticateAPIKey', function() use ($app) {
 -------------
 */
 
-$app->post('/system/pagos', function() use ($app) {
+$app->post('/system/socios', function() use ($app) {
     $response = array();
     $db = new DbHandler();
-    $cron1 = $db->inactiveEmpresas();
-    $cron2 = $db->inactiveCategoriasUsuario();
+    verifyRequiredParams(array('data'));
+    $data = $app->request->get('data');
+    $db->gestionSocios($data);
     $response["error"] = false;
-    $response["message"] = "Se ha actualizado el pago correctamente";
+    $response["message"] = "Se ha actualizado correctamente la plantilla de socios";
     echoRespnse(200, $response);
 });
 
