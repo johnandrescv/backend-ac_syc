@@ -683,8 +683,8 @@ $app->post('/historial', 'authenticateAPIKey', function() use ($app) {
         }
     }else{
         $descripcion = empty($app->request->get('descripcion')) ? '' : $app->request->post('descripcion');
-        $id_autorizacion = empty($app->request->get('id_autorizacion')) ? 0 : $app->request->post('id_autorizacion');
-        $res = $db->createEntradaHistorial($descripcion, $id_usuario, $id_autorizacion, $id_administrador, $id_acceso);
+        $id_invitacion = empty($app->request->get('id_invitacion')) ? 0 : $app->request->post('id_invitacion');
+        $res = $db->createEntradaHistorial($descripcion, $id_usuario, $id_invitacion, $id_administrador, $id_acceso);
         if($res == OPERATION_SUCCESSFUL){
             $response["error"] = false;
             $response["message"] = "Entrada registrada correctamente";

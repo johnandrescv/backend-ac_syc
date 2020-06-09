@@ -770,10 +770,10 @@ class DbHandler {
     -------------
     */
 
-    public function createEntradaHistorial($descripcion, $id_usuario, $id_autorizacion, $id_administrador, $id_acceso) {
+    public function createEntradaHistorial($descripcion, $id_usuario, $id_invitacion, $id_administrador, $id_acceso) {
         $response = array();
-        $stmt = $this->conn->prepare("INSERT INTO historial(descripcion, id_usuario, id_autorizacion, id_administrador, id_acceso) values (?,?,?,?,?)");
-        $stmt->bind_param("sssss", $descripcion, $id_usuario, $id_autorizacion, $id_administrador, $id_acceso);
+        $stmt = $this->conn->prepare("INSERT INTO historial(descripcion, id_usuario, id_invitacion, id_administrador, id_acceso) values (?,?,?,?,?)");
+        $stmt->bind_param("sssss", $descripcion, $id_usuario, $id_invitacion, $id_administrador, $id_acceso);
         $result = $stmt->execute();
         //printf("Error: %s.\n", $stmt->error);
         $stmt->close();
@@ -811,11 +811,11 @@ class DbHandler {
         $stmt->execute();
         $result = $stmt->get_result();
         if ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-            $auth = $row['id_autorizacion']? $this->getUsuarioById($row['id_autorizacion']) : false;
+            $auth = $row['id_invitacion']? $this->getInvitacionesById($row['id_invitacion']) : false;
             $response = array(
                 'id_historial' => $row['id_historial'],
                 'usuario' => $this->getUsuarioById($row['id_usuario']),
-                'autorizacion' => $auth,
+                'autorizacion' => $auth['socio']['nombres'],
                 'administrador' => $this->getAdminById($row['id_administrador']),
                 'acceso' => $this->getAccesoById($row['id_acceso']),
                 'fecha_entrada' => $row['fecha_creacion'],
