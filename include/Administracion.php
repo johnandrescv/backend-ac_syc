@@ -601,7 +601,7 @@ class DbHandler {
 
     public function gestionSocios($data) {
         $this->deactivateUser(1);
-        $socios = json_decode($data);
+        $socios = json_decode($data, true);
         foreach($socios as $socio) {
             $existe = $this->searchUsuariosByDNI($socio["dni"]);
             if($existe === false) {
