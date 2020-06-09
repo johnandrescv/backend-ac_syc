@@ -769,7 +769,7 @@ $app->put('/system/socios', function() use ($app) {
     $response = array();
     $db = new DbHandler();
     verifyRequiredParams(array('data'));
-    $data = $app->request->get('data');
+    $data = $app->request->put('data');
     $db->gestionSocios($data);
     $response["error"] = false;
     $response["message"] = "Se ha actualizado correctamente la plantilla de socios";
