@@ -604,7 +604,7 @@ class DbHandler {
         $socios = json_decode($data, true);
         $cont = 0;
         foreach($socios as $socio) {
-            error_log($socio);
+            error_log(json_encode($socio));
             $existe = $this->searchUsuariosByDNI($socio["dni"]);
             if($existe === false) {
                 $this->createUsuario($socio["dni"], $socio["nombres"], 2);
