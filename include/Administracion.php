@@ -603,8 +603,7 @@ class DbHandler {
         $this->deactivateUser(1);
         $socios = json_decode($data, true);
         foreach($socios as $socio) {
-            $existe = $this->searchUsuariosByDNI($socio["dni"]);
-            error_log(json_encode($existe));
+            $existe = $this->searchSociosByDNI($socio["dni"]);
             if($existe === false) {
                 $this->createUsuario($socio["dni"], $socio["nombres"], 1);
             }else{
@@ -612,6 +611,18 @@ class DbHandler {
             }
         }
         return true;
+    }
+
+    
+    public function searchSociosByDNI($texto) {
+        $response = array();
+        $stmt = $this->conn->prepare("SELECT id_usuario FROM usuarios WHERE dni = ?");
+        $stmt->bind_param("s", $texto);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+            return $this->getUsuarioById($row["id_usuario"]);
+        } else return false;
     }
 
     public function activateUser($id) {
