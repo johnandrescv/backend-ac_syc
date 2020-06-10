@@ -602,15 +602,14 @@ class DbHandler {
     public function gestionSocios($data) {
         $this->deactivateUser(1);
         $socios = json_decode($data, true);
-        $cont = 0;
         foreach($socios as $socio) {
             $existe = $this->searchUsuariosByDNI($socio["dni"]);
+            error_log(json_encode($existe));
             if($existe === false) {
                 $this->createUsuario($socio["dni"], $socio["nombres"], 1);
             }else{
                 $this->activateUser($existe["id_usuario"]);
             }
-            $cont++;
         }
         return true;
     }
