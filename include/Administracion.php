@@ -606,7 +606,7 @@ class DbHandler {
         foreach($socios as $socio) {
             $existe = $this->searchUsuariosByDNI($socio["dni"]);
             if($existe === false) {
-                $this->createUsuario($socio["dni"], $socio["nombres"], 2);
+                $this->createUsuario($socio["dni"], $socio["nombres"], 1);
             }else{
                 $this->activateUser($existe["id_usuario"]);
             }
