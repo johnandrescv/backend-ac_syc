@@ -398,11 +398,11 @@ class DbHandler {
         return $num_rows > 0;
     }
 
-    public function createAcceso($nombres, $ip, $url, $is_salida) {
+    public function createAcceso($nombres, $ip, $url, $camara, $is_salida) {
         if (!$this->isAccesoExists($ip)) {
             $response = array();
-            $stmt = $this->conn->prepare("INSERT INTO accesos(nombres, ip, url, is_salida) values (?,?,?,?)");
-            $stmt->bind_param("ssss", $nombres, $ip, $url, $is_salida);
+            $stmt = $this->conn->prepare("INSERT INTO accesos(nombres, ip, url, camara, is_salida) values (?,?,?,?,?)");
+            $stmt->bind_param("sssss", $nombres, $ip, $url, $camara, $is_salida);
             $result = $stmt->execute();
             //printf("Error: %s.\n", $stmt->error);
             $stmt->close();
@@ -416,11 +416,11 @@ class DbHandler {
         return $response;
     }
 
-    public function editAcceso($id, $nombres, $ip, $url, $is_salida) {
+    public function editAcceso($id, $nombres, $ip, $url, $camara, $is_salida) {
         if (!$this->isAccesoExists($ip, $id)) {
             $response = array();
-            $stmt = $this->conn->prepare("UPDATE accesos SET nombres = ?, url = ?, is_salida = ? WHERE id_acceso = ?");
-            $stmt->bind_param("ssss", $nombres, $url, $is_salida, $id);
+            $stmt = $this->conn->prepare("UPDATE accesos SET nombres = ?, url = ?, is_salida = ?, camara = ? WHERE id_acceso = ?");
+            $stmt->bind_param("sssss", $nombres, $url, $is_salida, $camara, $id);
             $result = $stmt->execute();
             //printf("Error: %s.\n", $stmt->error);
             $stmt->close();
@@ -450,6 +450,7 @@ class DbHandler {
                 'nombres' => $row['nombres'],
                 'ip' => $row['ip'],
                 'url' => $row['url'],
+                'camara' => $row['camara'],
                 'is_salida' => $row['is_salida'],
                 'fecha_creacion' => $row['fecha_creacion'],
             );
