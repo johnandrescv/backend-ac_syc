@@ -353,15 +353,16 @@ $app->post('/acceso', 'authenticateAPIKey', function() use ($app) {
     $response = array();
     $db = new DbHandler();
     // check for required params
-    verifyRequiredParams(array('nombres', 'ip', 'url', 'is_salida'));
+    verifyRequiredParams(array('nombres', 'ip', 'url', 'camara', 'is_salida'));
 
     // reading params
     $nombres = $app->request->post('nombres');
     $ip = $app->request->post('ip');
     $url = $app->request->post('url');
+    $camara = $app->request->post('camara');
     $is_salida = $app->request->post('is_salida');
 
-    $res = $db->createAcceso($nombres, $ip, $url, $is_salida);
+    $res = $db->createAcceso($nombres, $ip, $url, $camara, $is_salida);
     if ($res == OPERATION_SUCCESSFUL) {
         $response["error"] = false;
         $response["message"] = "Se ha registrado el acceso exitosamente.";
@@ -381,14 +382,15 @@ $app->put('/acceso/:id', 'authenticateAPIKey', function($id) use ($app) {
     $response = array();
     $db = new DbHandler();
     // check for required params
-    verifyRequiredParams(array('nombres', 'ip', 'url', 'is_salida'));
+    verifyRequiredParams(array('nombres', 'ip', 'url', 'camara', 'is_salida'));
 
     // reading params
     $nombres = $app->request->put('nombres');
     $ip = $app->request->put('ip');
     $url = $app->request->put('url');
+    $camara = $app->request->put('camara');
     $is_salida = $app->request->put('is_salida');
-    $res = $db->editAcceso($id, $nombres, $ip, $url, $is_salida);
+    $res = $db->editAcceso($id, $nombres, $ip, $url, $camara, $is_salida);
 
     if ($res == OPERATION_SUCCESSFUL) {
         $response["error"] = false;
