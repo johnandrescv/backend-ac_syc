@@ -289,9 +289,19 @@ $app->get('/admin', 'authenticateAPIKey', function() use ($app) {
     $pagina = empty($app->request->get('pagina')) ? 0 : $app->request->get('pagina');
     $estado = empty($app->request->get('estado')) ? ESTADO_ACTIVO : $app->request->get('estado');
     $response["error"] = false;
-    $response["administradores"] = $db->getAdmins($pagina, $estado);
+    $response["administradores"] = $db->getAdmins($estado);
     echoRespnse(200, $response);
 });
+
+$app->get('/admin/rol', 'authenticateAPIKey', function() use ($app) {
+    $response = array();
+    $db = new DbHandler();
+    $rol = empty($app->request->get('rol')) ? 3 : $app->request->get('rol');
+    $response["error"] = false;
+    $response["administradores"] = $db->getAdminByRol($rol);
+    echoRespnse(200, $response);
+});
+
 
 $app->post('/login', function() use ($app) {
     $response = array();

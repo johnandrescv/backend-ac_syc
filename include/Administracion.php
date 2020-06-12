@@ -342,11 +342,24 @@ class DbHandler {
         } else return RECORD_DOES_NOT_EXIST;
     }
 
-    public function getAdmins($pagina, $estado = ESTADO_ACTIVO) {
-        $pagina = $pagina * 50;
+    public function getAdmins($estado = ESTADO_ACTIVO) {
         $response = array();
-        $stmt = $this->conn->prepare("SELECT id_administrador FROM administradores WHERE estado = ? order by id_administrador limit ?,50");
-        $stmt->bind_param("ss", $estado, $pagina);
+        $stmt = $this->conn->prepare("SELECT id_administrador FROM administradores WHERE estado = ? order by id_administrador");
+        $stmt->bind_param("s", $estado);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+            $res = $this->getAdminById($row["id_administrador"]);
+            if ($res != RECORD_DOES_NOT_EXIST)
+				$response[] = $res;
+        }
+        return $response;
+    }
+
+    public function getAdminByRol($rol) {
+        $response = array();
+        $stmt = $this->conn->prepare("SELECT id_administrador FROM administradores WHERE rol = ? order by id_administrador");
+        $stmt->bind_param("s", $rol);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
