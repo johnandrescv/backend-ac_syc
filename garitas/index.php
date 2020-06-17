@@ -298,6 +298,29 @@ $app->post('/historial', 'authenticateAPIKey', function() use ($app) {
     }
 });
 
+/* 
+------------- 
+---------- OPEN GARITA
+-------------
+*/
+
+$app->post('/open_garita', 'authenticateAPIKey', function() use ($app) {
+    $response = array();
+    $db = new DbHandler();
+    global $guardia_id;
+    global $emp_id;
+    // check for required params
+    verifyRequiredParams(array('id_punto'));
+
+    // reading params
+    $dni = $app->request->post('dni');
+    $id_punto = $app->request->post('id_punto');
+
+    $response["error"] = false;
+    $response["usuarios"] = $db->searchUsuario($dni, $emp_id, $id_punto);
+    echoRespnse(201, $response);
+});
+
 $app->run();
 
 ?>

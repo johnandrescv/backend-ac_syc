@@ -854,7 +854,7 @@ class DbHandler {
         $stmt->close();
 
         if ($result) {
-            $this->createLog($id_administrador, $id_acceso);
+            // $this->createLog($id_administrador, $id_acceso);
             return OPERATION_SUCCESSFUL;
         } else {
             return OPERATION_FAILED;
@@ -871,7 +871,7 @@ class DbHandler {
         $stmt->close();
 
         if ($result) {
-            $this->createLog($id_administrador, $id_acceso);
+            // $this->createLog($id_administrador, $id_acceso);
             return OPERATION_SUCCESSFUL;
         } else {
             return OPERATION_FAILED;
@@ -1017,6 +1017,27 @@ class DbHandler {
             $this->deleteRecord("categorias_usuarios", "id_categoria_usuario", $row["id_categoria_usuario"]);
         }
         return OPERATION_SUCCESSFUL;
+    }
+
+    /* 
+    ------------- 
+    ---------- OPEN GARITA
+    -------------
+    */
+
+    public function openGarita($id_acceso, $id_administrador) {
+        $acceso = $this->getAccesoById($id_acceso);
+        $cURLConnection = curl_init();
+        curl_setopt($cURLConnection, CURLOPT_URL, $acceso['url']);
+        curl_setopt($cURLConnection, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($cURLConnection);
+        if (!curl_errno($ch)) {
+            curl_close($cURLConnection);
+            return false;
+        }
+        curl_close($cURLConnection);
+        $this->createLog($id_administrador, $id_acceso);
+        return true;
     }
 
     /* 

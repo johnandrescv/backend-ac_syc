@@ -733,6 +733,26 @@ $app->get('/historial', 'authenticateAPIKey', function() use ($app) {
 -------------
 */
 
+$app->post('/open_garita', 'authenticateAPIKey', function() use ($app) {
+    $response = array();
+    global $user_id;
+    $db = new DbHandler();
+    // check for required params
+    verifyRequiredParams(array('id_acceso'));
+    // reading params
+    $id_acceso = $app->request->post('id_acceso');
+    $response = $db->openGarita($id_acceso, $user_id);
+    if($response) {
+        $response["error"] = false;
+        $response["message"] = 'Acceso correcto';
+        echoRespnse(200, $response);
+    }else{
+        $response["error"] = true;
+        $response["message"] = 'Apertura incorrecta';
+        echoRespnse(400, $response);
+    }
+});
+
 $app->post('/logs', 'authenticateAPIKey', function() use ($app) {
     $response = array();
     $db = new DbHandler();
