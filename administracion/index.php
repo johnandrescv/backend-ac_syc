@@ -458,9 +458,10 @@ $app->post('/usuarios/invitados', function() use ($app) {
     // reading params
     $dni = $app->request->post('dni');
     $nombres = $app->request->post('nombres');
+    $imagen = empty($app->request->post('imagen')) ? '' : $app->request->post('imagen');
     $id_tipo = 2;
 
-    $res = $db->createUsuario($dni, $nombres, $id_tipo);
+    $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen);
     if ($res == OPERATION_SUCCESSFUL) {
         $response["error"] = false;
         $response["message"] = "Se ha registrado el invitado exitosamente.";
@@ -487,8 +488,9 @@ $app->post('/usuarios', 'authenticateAPIKey', function() use ($app) {
     $dni = $app->request->post('dni');
     $nombres = $app->request->post('nombres');
     $id_tipo = $app->request->post('id_tipo');
+    $imagen = empty($app->request->post('imagen')) ? '' : $app->request->post('imagen');
 
-    $res = $db->createUsuario($dni, $nombres, $id_tipo);
+    $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen);
     if ($res == OPERATION_SUCCESSFUL) {
         $response["error"] = false;
         $response["message"] = "Se ha registrado el usuario exitosamente.";
@@ -514,8 +516,9 @@ $app->put('/usuarios/:id', 'authenticateAPIKey', function($id) use ($app) {
     $dni = $app->request->put('dni');
     $nombres = $app->request->put('nombres');
     $id_tipo = $app->request->put('id_tipo');
-
-    $res = $db->editUsuario($id, $dni, $nombres, $id_tipo);
+    $imagen = empty($app->request->put('imagen')) ? '' : $app->request->put('imagen');
+    $res = $db->editUsuario($id, $dni, $nombres, $id_tipo, $imagen);
+    
     if ($res == OPERATION_SUCCESSFUL) {
         $response["error"] = false;
         $response["message"] = "Se ha actualizado el usuario exitosamente.";

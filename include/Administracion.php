@@ -507,11 +507,11 @@ class DbHandler {
         return $num_rows > 0;
     }
 
-    public function createUsuario($dni, $nombres, $id_tipo) {
+    public function createUsuario($dni, $nombres, $id_tipo, $imagen) {
         if (!$this->isUsuarioExists($dni)) {
             $response = array();
-            $stmt = $this->conn->prepare("INSERT INTO usuarios(dni, nombres, id_tipo) values (?,?,?)");
-            $stmt->bind_param("sss", $dni, $nombres, $id_tipo);
+            $stmt = $this->conn->prepare("INSERT INTO usuarios(dni, nombres, id_tipo, imagen) values (?,?,?,?)");
+            $stmt->bind_param("ssss", $dni, $nombres, $id_tipo, $imagen);
             $result = $stmt->execute();
             //printf("Error: %s.\n", $stmt->error);
             $stmt->close();
@@ -525,11 +525,11 @@ class DbHandler {
         return $response;
     }
 
-    public function editUsuario($id, $dni, $nombres, $id_tipo) {
+    public function editUsuario($id, $dni, $nombres, $id_tipo, $imagen) {
         if (!$this->isUsuarioExists($dni, $id)) {
             $response = array();
-            $stmt = $this->conn->prepare("UPDATE usuarios SET nombres = ?, id_tipo = ? WHERE id_usuario = ?");
-            $stmt->bind_param("sss", $nombres, $id_tipo, $id);
+            $stmt = $this->conn->prepare("UPDATE usuarios SET nombres = ?, id_tipo = ?, imagen = ? WHERE id_usuario = ?");
+            $stmt->bind_param("ssss", $nombres, $id_tipo, $imagen, $id);
             $result = $stmt->execute();
             //printf("Error: %s.\n", $stmt->error);
             $stmt->close();
@@ -559,6 +559,7 @@ class DbHandler {
                 'dni' => $row['dni'],
                 'nombres' => $row['nombres'],
                 'tipo' => $this->getTipoById($row['id_tipo']),
+                'imagen' => $row['imagen'],
                 'fecha_creacion' => $row['fecha_creacion'],
             );
             if($row['id_tipo'] === 2){
