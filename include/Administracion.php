@@ -569,11 +569,11 @@ class DbHandler {
         } else return RECORD_DOES_NOT_EXIST;
     }
 
-    public function getUsuarios($pagina, $estado = ESTADO_ACTIVO) {
+    public function getUsuarios($estado = ESTADO_ACTIVO) {
         $pagina = $pagina * 50;
         $response = array();
-        $stmt = $this->conn->prepare("SELECT id_usuario FROM usuarios WHERE estado = ? order by id_usuario limit ?,50");
-        $stmt->bind_param("ss", $estado, $pagina);
+        $stmt = $this->conn->prepare("SELECT id_usuario FROM usuarios WHERE estado = ? order by id_usuario");
+        $stmt->bind_param("s", $estado);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
