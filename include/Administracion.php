@@ -570,7 +570,6 @@ class DbHandler {
     }
 
     public function getUsuarios($estado = ESTADO_ACTIVO) {
-        $pagina = $pagina * 50;
         $response = array();
         $stmt = $this->conn->prepare("SELECT id_usuario FROM usuarios WHERE estado = ? order by id_usuario");
         $stmt->bind_param("s", $estado);
