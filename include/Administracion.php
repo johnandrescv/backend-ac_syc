@@ -554,6 +554,7 @@ class DbHandler {
         $stmt->execute();
         $result = $stmt->get_result();
         if ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+            $activo = ($row['estado'] == ESTADO_ELIMINADO) ? false : true;
             $response = array(
                 'id_usuario' => $row['id_usuario'],
                 'dni' => $row['dni'],
@@ -561,6 +562,7 @@ class DbHandler {
                 'tipo' => $this->getTipoById($row['id_tipo']),
                 'imagen' => $row['imagen'],
                 'fecha_creacion' => $row['fecha_creacion'],
+                'activo' => $activo
             );
             if($row['id_tipo'] === 2){
                 $response['invitaciones'] = $this->getInvitacionesByInvitado($row['id_usuario']);
@@ -598,7 +600,7 @@ class DbHandler {
 
     public function searchUsuariosByDNI($texto) {
         $response = array();
-        $stmt = $this->conn->prepare("SELECT id_usuario FROM usuarios WHERE dni = ? AND estado != '". ESTADO_ELIMINADO ."'");
+        $stmt = $this->conn->prepare("SELECT id_usuario FROM usuarios WHERE dni = ? AND (id_tipo = 1 OR estado != '". ESTADO_ELIMINADO ."')");
         $stmt->bind_param("s", $texto);
         $stmt->execute();
         $result = $stmt->get_result();

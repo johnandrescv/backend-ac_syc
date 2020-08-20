@@ -234,6 +234,40 @@ $app->get('/categorias', 'authenticateAPIKey', function() use ($app) {
 
 /* 
 ------------- 
+---------- USUARIOS
+-------------
+*/
+
+$app->post('/proveedor', 'authenticateAPIKey', function() use ($app) {
+    $response = array();
+    $db = new DbHandler();
+    // check for required params
+    verifyRequiredParams(array('dni','nombres'));
+
+    // reading params
+    $dni = $app->request->post('dni');
+    $nombres = $app->request->post('nombres');
+    $id_tipo = 3;
+    $imagen = empty($app->request->post('imagen')) ? '' : $app->request->post('imagen');
+
+    $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen);
+    if ($res == OPERATION_SUCCESSFUL) {
+        $response["error"] = false;
+        $response["message"] = "Se ha registrado el proveedor exitosamente.";
+        echoRespnse(201, $response);
+    } else if ($res == OPERATION_FAILED) {
+        $response["error"] = true;
+        $response["message"] = $GLOBALS["request_error"];
+        echoRespnse(500, $response);
+    } else if ($res == RECORD_DUPLICATED) {
+        $response["error"] = true;
+        $response["message"] = "El proveedor ya se encuentra registrado.";
+        echoRespnse(400, $response);
+    }
+});
+
+/* 
+------------- 
 ---------- HISTORIAL
 -------------
 */
