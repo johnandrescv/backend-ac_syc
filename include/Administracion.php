@@ -620,9 +620,9 @@ class DbHandler {
         $socios = json_decode($data, true);
         foreach($socios as $socio) {
             $existe = $this->searchSociosByDNI($socio["dni"]);
-            error_log(json_encode($socio));
             if($existe === false) {
-                $this->createUsuario($socio["dni"], $socio["nombres"], 1, 'http://10.22.8.42/api/uploads/image.php?nombre='.$socio["dni"].'.JPG', $socio["status"], $socio["parentesco"], '', '');
+                $response = $this->createUsuario($socio["dni"], $socio["nombres"], 1, 'http://10.22.8.42/api/uploads/image.php?nombre='.$socio["dni"].'.JPG', $socio["status"], $socio["parentesco"], '', '');
+                error_log($response);
             }else{
                 $this->activateUser($existe["id_usuario"]);
             }
