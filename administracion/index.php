@@ -180,6 +180,8 @@ $app->get('/dashboard', 'authenticateAPIKey', function() use ($app) {
     $mensual = empty($app->request->get('mensual')) ? false : true;
     if($mensual){
         $response["error"] = false;
+        $response["unicos_entradas"] = $db->getCountDistinctTotalRegistrosByMensual(false);
+        $response["unicos_salidas"] = $db->getCountDistinctTotalRegistrosByMensual(true);
         $response["entradas"] = $db->getCountTotalRegistrosByMensual(false);
         $response["salidas"] = $db->getCountTotalRegistrosByMensual(true);
         $response["socios"] = $db->getRegistroUsuarioByMensual(1);
@@ -190,6 +192,8 @@ $app->get('/dashboard', 'authenticateAPIKey', function() use ($app) {
         echoRespnse(200, $response);
     }else{
         $response["error"] = false;
+        $response["unicos_entradas"] = $db->getCountDistinctTotalRegistrosByDay(false);
+        $response["unicos_salidas"] = $db->getCountDistinctTotalRegistrosByDay(true);
         $response["entradas"] = $db->getCountTotalRegistrosByDay(false);
         $response["salidas"] = $db->getCountTotalRegistrosByDay(true);
         $response["socios"] = $db->getRegistroUsuarioByDay(1);

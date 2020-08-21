@@ -25,6 +25,17 @@ trait Reportes {
         } else return 0;
     }
 
+    public function getCountDistinctTotalRegistrosByDay($salida) {
+        $response = array();
+        $salida = $salida? "AND !(fecha_salida is NULL) " : "";
+        $stmt= $this->conn->prepare("SELECT COUNT(DISTINCT(id_usuario)) as total FROM historial WHERE CAST(fecha_creacion as DATE) = CAST(NOW() as DATE) $salida");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+            return $row['total'];
+        } else return 0;
+    }
+
     public function getRegistroUsuarioByDay($tipo_usuario) {
         $response = array();
         $stmt= $this->conn->prepare("SELECT COUNT(h.id_historial) as total FROM historial h, usuarios u WHERE h.id_usuario = u.id_usuario AND u.id_tipo = ? AND CAST(h.fecha_creacion as DATE) = CAST(NOW() as DATE)");
@@ -92,6 +103,17 @@ trait Reportes {
         $response = array();
         $salida = $salida? "AND !(fecha_salida is NULL) " : "";
         $stmt= $this->conn->prepare("SELECT COUNT(*) as total FROM historial WHERE DATE_FORMAT(CAST(fecha_creacion as DATE),  '%m-%Y') = DATE_FORMAT(CAST(NOW() as DATE), '%m-%Y') $salida");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+            return $row['total'];
+        } else return 0;
+    }
+
+    public function getCountDistinctTotalRegistrosByMensual($salida) {
+        $response = array();
+        $salida = $salida? "AND !(fecha_salida is NULL) " : "";
+        $stmt= $this->conn->prepare("SELECT COUNT(DISTINCT(id_usuario)) as total FROM historial WHERE DATE_FORMAT(CAST(fecha_creacion as DATE),  '%m-%Y') = DATE_FORMAT(CAST(NOW() as DATE), '%m-%Y') $salida");
         $stmt->execute();
         $result = $stmt->get_result();
         if ($row = $result->fetch_array(MYSQLI_ASSOC)) {
