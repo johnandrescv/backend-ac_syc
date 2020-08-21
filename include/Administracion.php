@@ -888,7 +888,7 @@ class DbHandler {
         $stmt->execute();
         $result = $stmt->get_result();
         if ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-            $auth = (!is_null($row['id_invitacion']))? $this->getInvitacionesById($row['id_invitacion']) : false;
+            $auth = (!is_null($row['id_invitacion']) && $row['id_invitacion'] !== 0)? $this->getInvitacionesById($row['id_invitacion']) : false;
             $response = array(
                 'id_historial' => $row['id_historial'],
                 'usuario' => $this->getUsuarioById($row['id_usuario']),
