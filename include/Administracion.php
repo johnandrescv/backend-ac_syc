@@ -556,12 +556,20 @@ class DbHandler {
         $result = $stmt->get_result();
         if ($row = $result->fetch_array(MYSQLI_ASSOC)) {
             $activo = ($row['estado'] == ESTADO_ELIMINADO) ? false : true;
+            $nucleo = ($row['id_tipo'] === 1) ? $this->getNucleoFamiliar($row['codigo'], $row['id_usuario']) : false;
             $response = array(
                 'id_usuario' => $row['id_usuario'],
+                'codigo' => $row['codigo'],
                 'dni' => $row['dni'],
                 'nombres' => $row['nombres'],
                 'tipo' => $this->getTipoById($row['id_tipo']),
                 'imagen' => $row['imagen'],
+                'edad' => $row['edad'],
+                'correo' => $row['correo'],
+                'parentesco' => $row['parentesco'],
+                'socio_status' => $row['socio_status'],
+                'familiares' => $nucleo,
+                'codigo' => $row['codigo'],
                 'fecha_creacion' => $row['fecha_creacion'],
                 'activo' => $activo
             );
@@ -570,6 +578,20 @@ class DbHandler {
             }
             return $response;
         } else return RECORD_DOES_NOT_EXIST;
+    }
+
+    public function getNucleoFamiliar($codigo, $id) {
+        $response = array();
+        $stmt = $this->conn->prepare("SELECT id_usuario from usuarios where codigo = ? and id_usuario != ?");
+        $stmt->bind_param("ss", $codigo, $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+            $res = $this->getUsuarioById($row["id_usuario"]);
+            if ($res != RECORD_DOES_NOT_EXIST)
+				$response[] = $res;
+        }
+        return $response;
     }
 
     public function getUsuarios($estado = ESTADO_ACTIVO) {
