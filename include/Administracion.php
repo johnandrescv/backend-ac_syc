@@ -586,6 +586,7 @@ class DbHandler {
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+            $activo = ($row['estado'] == ESTADO_ELIMINADO) ? false : true;
 			$response[] = array(
                 'id_usuario' => $row['id_usuario'],
                 'codigo' => $row['codigo'],
