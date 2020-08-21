@@ -249,8 +249,10 @@ $app->post('/proveedor', 'authenticateAPIKey', function() use ($app) {
     $nombres = $app->request->post('nombres');
     $id_tipo = 3;
     $imagen = empty($app->request->post('imagen')) ? '' : $app->request->post('imagen');
-
-    $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen);
+    $correo = empty($app->request->post('correo')) ? '' : $app->request->post('correo');
+    $edad = empty($app->request->post('edad')) ? '' : $app->request->post('edad');
+    
+    $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen, '', '', $edad, $correo);
     if ($res == OPERATION_SUCCESSFUL) {
         $response["error"] = false;
         $response["message"] = "Se ha registrado el proveedor exitosamente.";

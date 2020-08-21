@@ -462,10 +462,12 @@ $app->post('/usuarios/invitados', function() use ($app) {
     // reading params
     $dni = $app->request->post('dni');
     $nombres = $app->request->post('nombres');
+    $edad = empty($app->request->post('edad')) ? '' : $app->request->post('edad');
+    $correo = empty($app->request->post('correo')) ? '' : $app->request->post('correo');
     $imagen = empty($app->request->post('imagen')) ? '' : $app->request->post('imagen');
     $id_tipo = 2;
 
-    $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen);
+    $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen, '', '', $edad, $correo);
     if ($res == OPERATION_SUCCESSFUL) {
         $response["error"] = false;
         $response["message"] = "Se ha registrado el invitado exitosamente.";
@@ -492,9 +494,11 @@ $app->post('/usuarios', 'authenticateAPIKey', function() use ($app) {
     $dni = $app->request->post('dni');
     $nombres = $app->request->post('nombres');
     $id_tipo = $app->request->post('id_tipo');
+    $correo = empty($app->request->post('correo')) ? '' : $app->request->post('correo');
+    $edad = empty($app->request->post('edad')) ? '' : $app->request->post('edad');
     $imagen = empty($app->request->post('imagen')) ? '' : $app->request->post('imagen');
 
-    $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen);
+    $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen, '', '', $edad, $correo);
     if ($res == OPERATION_SUCCESSFUL) {
         $response["error"] = false;
         $response["message"] = "Se ha registrado el usuario exitosamente.";
@@ -520,8 +524,10 @@ $app->put('/usuarios/:id', 'authenticateAPIKey', function($id) use ($app) {
     $dni = $app->request->put('dni');
     $nombres = $app->request->put('nombres');
     $id_tipo = $app->request->put('id_tipo');
-    $imagen = empty($app->request->put('imagen')) ? '' : $app->request->put('imagen');
-    $res = $db->editUsuario($id, $dni, $nombres, $id_tipo, $imagen);
+    $correo = empty($app->request->put('correo')) ? '' : $app->request->put('correo');
+    $edad = empty($app->request->put('edad')) ? '' : $app->request->put('edad');
+    // $imagen = empty($app->request->put('imagen')) ? '' : $app->request->put('imagen');
+    $res = $db->editUsuario($id, $dni, $nombres, $id_tipo, $edad, $correo);
     
     if ($res == OPERATION_SUCCESSFUL) {
         $response["error"] = false;

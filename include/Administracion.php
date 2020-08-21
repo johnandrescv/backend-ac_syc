@@ -507,11 +507,11 @@ class DbHandler {
         return $num_rows > 0;
     }
 
-    public function createUsuario($dni, $nombres, $id_tipo, $imagen) {
+    public function createUsuario($dni, $nombres, $id_tipo, $imagen, $socio_status, $parentesco, $edad, $correo) {
         if (!$this->isUsuarioExists($dni)) {
             $response = array();
-            $stmt = $this->conn->prepare("INSERT INTO usuarios(dni, nombres, id_tipo, imagen) values (?,?,?,?)");
-            $stmt->bind_param("ssss", $dni, $nombres, $id_tipo, $imagen);
+            $stmt = $this->conn->prepare("INSERT INTO usuarios(dni, nombres, id_tipo, imagen, socio_status, parentesco, edad, correo) values (?,?,?,?,?,?,?,?)");
+            $stmt->bind_param("ssssssss", $dni, $nombres, $id_tipo, $imagen, $socio_status, $parentesco, $edad, $correo);
             $result = $stmt->execute();
             //printf("Error: %s.\n", $stmt->error);
             $stmt->close();
@@ -525,11 +525,11 @@ class DbHandler {
         return $response;
     }
 
-    public function editUsuario($id, $dni, $nombres, $id_tipo, $imagen) {
+    public function editUsuario($id, $dni, $nombres, $id_tipo, $edad, $correo) {
         if (!$this->isUsuarioExists($dni, $id)) {
             $response = array();
-            $stmt = $this->conn->prepare("UPDATE usuarios SET nombres = ?, id_tipo = ?, imagen = ? WHERE id_usuario = ?");
-            $stmt->bind_param("ssss", $nombres, $id_tipo, $imagen, $id);
+            $stmt = $this->conn->prepare("UPDATE usuarios SET nombres = ?, id_tipo = ?, edad = ?, correo = ? WHERE id_usuario = ?");
+            $stmt->bind_param("ssss", $nombres, $edad, $correo, $id_tipo);
             $result = $stmt->execute();
             //printf("Error: %s.\n", $stmt->error);
             $stmt->close();
@@ -621,7 +621,7 @@ class DbHandler {
         foreach($socios as $socio) {
             $existe = $this->searchSociosByDNI($socio["dni"]);
             if($existe === false) {
-                $this->createUsuario($socio["dni"], $socio["nombres"], 1, 'http://10.22.8.42/api/uploads/image.php?nombre='.$socio["dni"].'.JPG');
+                $this->createUsuario($socio["dni"], $socio["nombres"], 1, 'http://10.22.8.42/api/uploads/image.php?nombre='.$socio["dni"].'.JPG', $socio["status"], $socio["parentesco"], '', '');
             }else{
                 $this->activateUser($existe["id_usuario"]);
             }
