@@ -519,6 +519,7 @@ class DbHandler {
             if ($result) {
                 return OPERATION_SUCCESSFUL;
             } else {
+                error_log($stmt->error);
                 return OPERATION_FAILED;
             }
         } else return RECORD_DUPLICATED;
@@ -622,7 +623,6 @@ class DbHandler {
             $existe = $this->searchSociosByDNI($socio["dni"]);
             if($existe === false) {
                 $response = $this->createUsuario($socio["dni"], $socio["nombres"], 1, 'http://10.22.8.42/api/uploads/image.php?nombre='.$socio["dni"].'.JPG', $socio["status"], $socio["parentesco"], '', '');
-                error_log($response);
             }else{
                 $this->activateUser($existe["id_usuario"]);
             }
