@@ -514,12 +514,12 @@ class DbHandler {
             $stmt->bind_param("ssssssss", $dni, $nombres, $id_tipo, $imagen, $socio_status, $parentesco, $edad, $correo);
             $result = $stmt->execute();
             //printf("Error: %s.\n", $stmt->error);
+            error_log(json_encode($stmt->error));
             $stmt->close();
 
             if ($result) {
                 return OPERATION_SUCCESSFUL;
             } else {
-                error_log($stmt->error);
                 return OPERATION_FAILED;
             }
         } else return RECORD_DUPLICATED;
