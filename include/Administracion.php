@@ -569,7 +569,6 @@ class DbHandler {
                 'parentesco' => $row['parentesco'],
                 'socio_status' => $row['socio_status'],
                 'familiares' => $nucleo,
-                'codigo' => $row['codigo'],
                 'fecha_creacion' => $row['fecha_creacion'],
                 'activo' => $activo
             );
@@ -582,14 +581,22 @@ class DbHandler {
 
     public function getNucleoFamiliar($codigo, $id) {
         $response = array();
-        $stmt = $this->conn->prepare("SELECT id_usuario from usuarios where codigo = ? and id_usuario != ?");
+        $stmt = $this->conn->prepare("SELECT * from usuarios where codigo = ? and id_usuario != ?");
         $stmt->bind_param("ss", $codigo, $id);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-            $res = $this->getUsuarioById($row["id_usuario"]);
-            if ($res != RECORD_DOES_NOT_EXIST)
-				$response[] = $res;
+			$response[] = array(
+                'id_usuario' => $row['id_usuario'],
+                'codigo' => $row['codigo'],
+                'dni' => $row['dni'],
+                'nombres' => $row['nombres'],
+                'imagen' => $row['imagen'],
+                'parentesco' => $row['parentesco'],
+                'socio_status' => $row['socio_status'],
+                'fecha_creacion' => $row['fecha_creacion'],
+                'activo' => $activo
+            );
         }
         return $response;
     }
