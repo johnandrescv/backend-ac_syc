@@ -237,6 +237,16 @@ $app->get('/categorias', 'authenticateAPIKey', function() use ($app) {
 ---------- USUARIOS
 -------------
 */
+$app->post('/usuarios/search', 'authenticateAPIKey', function() use ($app) {
+    $response = array();
+    verifyRequiredParams(array('texto'));
+    $texto = $app->request()->post('texto');
+    $db = new DbHandler();
+    $response["error"] = false;
+    $response["usuarios"] = $db->searchUsuariosByName($texto);
+    echoRespnse(200, $response);
+});
+
 
 $app->post('/proveedor', 'authenticateAPIKey', function() use ($app) {
     $response = array();
@@ -251,7 +261,7 @@ $app->post('/proveedor', 'authenticateAPIKey', function() use ($app) {
     $imagen = empty($app->request->post('imagen')) ? '' : $app->request->post('imagen');
     $correo = empty($app->request->post('correo')) ? '' : $app->request->post('correo');
     $edad = empty($app->request->post('edad')) ? '' : $app->request->post('edad');
-    
+
     $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen, '', '', $edad, $correo);
     if ($res == OPERATION_SUCCESSFUL) {
         $response["error"] = false;
