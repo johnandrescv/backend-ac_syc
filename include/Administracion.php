@@ -889,6 +889,7 @@ class DbHandler {
         $result = $stmt->get_result();
         if ($row = $result->fetch_array(MYSQLI_ASSOC)) {
             $auth = (!is_null($row['id_invitacion']))? $this->getInvitacionesById($row['id_invitacion']) : false;
+            var_dump($auth); die();
             $response = array(
                 'id_historial' => $row['id_historial'],
                 'usuario' => $this->getUsuarioById($row['id_usuario']),
