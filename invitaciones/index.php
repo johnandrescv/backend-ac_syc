@@ -194,7 +194,7 @@ $app->post('/generate', function() use ($app) {
     }
 });
 
-$app->post('/invitaciones/list', function() use ($app) {
+$app->post('/list', function() use ($app) {
     $response = array();
     verifyRequiredParams(array('dni'));
     $dni = $app->request()->post('dni');
@@ -204,7 +204,7 @@ $app->post('/invitaciones/list', function() use ($app) {
     echoRespnse(200, $response);
 });
 
-$app->put('/invitaciones/:id', function($id) use ($app) {
+$app->put('/action/:id', function($id) use ($app) {
     $response = array();
     $db = new DbHandler();
     // check for required params
@@ -230,7 +230,7 @@ $app->put('/invitaciones/:id', function($id) use ($app) {
     }
 });
 
-$app->delete('/invitaciones/:id', function($id) use ($app) {
+$app->delete('/action/:id', function($id) use ($app) {
     $response = array();
     $db = new DbHandler();
 
