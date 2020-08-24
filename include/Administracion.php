@@ -775,8 +775,23 @@ class DbHandler {
         return $response;
     }
 
+    public function getInvitacionesByAfiliado($dni) {
+        $response = array();
+        $stmt = $this->conn->prepare("SELECT i.id_invitacion FROM invitaciones i, usuarios u WHERE u.dni = ? AND u.id_tipo = 1  AND i.id_autorizacion = u.id_usuario  AND i.estado != '".ESTADO_ELIMINADO."' order by i.id_invitacion");
+        $stmt->bind_param("s", $dni);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+            $res = $this->getInvitacionesById($row["id_invitacion"]);
+            if ($res != RECORD_DOES_NOT_EXIST)
+				$response[] = $res;
+        }
+        return $response;
+    }
+
     public function getInvitacionesByInvitado($id_invitado) {
         $response = array();
+        $today = date('Y-m-d');
         $stmt = $this->conn->prepare("SELECT id_invitacion FROM invitaciones WHERE id_invitado = ? AND estado != '".ESTADO_ELIMINADO."'");
         $stmt->bind_param("s", $id_invitado);
         $stmt->execute();
@@ -784,6 +799,7 @@ class DbHandler {
         if ($row = $result->fetch_array(MYSQLI_ASSOC)) {
             $res = $this->getInvitacionesById($row["id_invitacion"]);
             $res['socio'] = $this->getUsuarioById($res["id_autorizacion"]);
+            $res['open'] = ($today == $res['fecha_caducidad']) ? true : false;
             return $res;
         } else return false;
     }

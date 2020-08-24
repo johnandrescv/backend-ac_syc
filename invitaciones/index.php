@@ -194,5 +194,57 @@ $app->post('/generate', function() use ($app) {
     }
 });
 
+$app->post('/invitaciones/list', function() use ($app) {
+    $response = array();
+    verifyRequiredParams(array('dni'));
+    $dni = $app->request()->post('dni');
+    $db = new DbHandler();
+    $response["error"] = false;
+    $response["invitaciones"] = $db->getInvitacionesByAfiliado($dni);
+    echoRespnse(200, $response);
+});
+
+$app->put('/invitaciones/:id', function($id) use ($app) {
+    $response = array();
+    $db = new DbHandler();
+    // check for required params
+    verifyRequiredParams(array('id_invitado', 'fecha_caducidad'));
+
+    // reading params
+    $id_invitado = $app->request->put('id_invitado');
+    $fecha_caducidad = $app->request->put('fecha_caducidad');
+
+    $res = $db->editInvitacion($id, $id_invitado, $fecha_caducidad);
+    if ($res == OPERATION_SUCCESSFUL) {
+        $response["error"] = false;
+        $response["message"] = "Se ha actualizado la invitación exitosamente.";
+        echoRespnse(201, $response);
+    } else if ($res == OPERATION_FAILED) {
+        $response["error"] = true;
+        $response["message"] = $GLOBALS["request_error"];
+        echoRespnse(500, $response);
+    } else if ($res == RECORD_DUPLICATED) {
+        $response["error"] = true;
+        $response["message"] = "La invitación no es válida.";
+        echoRespnse(400, $response);
+    }
+});
+
+$app->delete('/invitaciones/:id', function($id) use ($app) {
+    $response = array();
+    $db = new DbHandler();
+
+    $res = $db->deleteInvitacion($id);
+    if ($res == OPERATION_SUCCESSFUL) {
+        $response["error"] = false;
+        $response["message"] = "Se ha eliminado la invitación exitosamente.";
+        echoRespnse(200, $response);
+    } else {
+        $response["error"] = true;
+        $response["message"] = $GLOBALS["request_error"];
+        echoRespnse(500, $response);
+    }
+});
+
 $app->run();
 ?>
