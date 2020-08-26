@@ -942,6 +942,7 @@ class DbHandler {
                 'autorizacion' => ($auth !== false) ? $this->getUsuarioById($auth['id_autorizacion']) : false,
                 'administrador' => $this->getAdminById($row['id_administrador']),
                 'acceso' => $this->getAccesoById($row['id_acceso']),
+                'descripcion' => $row['descripcion'],
                 'fecha_entrada' => $row['fecha_creacion'],
                 'fecha_salida' => $row['fecha_salida'],
             );
