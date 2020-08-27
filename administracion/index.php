@@ -707,8 +707,8 @@ $app->post('/historial', 'authenticateAPIKey', function() use ($app) {
             }
         }
     }else{
-        $descripcion = empty($app->request->get('descripcion')) ? '' : $app->request->post('descripcion');
-        $id_invitacion = empty($app->request->get('id_invitacion')) ? 0 : $app->request->post('id_invitacion');
+        $descripcion = empty($app->request->post('descripcion')) ? '' : $app->request->post('descripcion');
+        $id_invitacion = empty($app->request->post('id_invitacion')) ? 0 : $app->request->post('id_invitacion');
         $res = $db->createEntradaHistorial($descripcion, $id_usuario, $id_invitacion, $id_administrador, $id_acceso);
         if($res == OPERATION_SUCCESSFUL){
             $response["error"] = false;
