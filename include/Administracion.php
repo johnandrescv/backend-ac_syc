@@ -569,12 +569,13 @@ class DbHandler {
                 'parentesco' => $row['parentesco'],
                 'socio_status' => $row['socio_status'],
                 'familiares' => $nucleo,
+                'invitaciones' =>  $this->getInvitacionesByInvitado($row['id_usuario']),
                 'fecha_creacion' => $row['fecha_creacion'],
                 'activo' => $activo
             );
-            if($row['id_tipo'] === 2){
+            /*if($row['id_tipo'] === 2){
                 $response['invitaciones'] = $this->getInvitacionesByInvitado($row['id_usuario']);
-            }
+            }*/
             return $response;
         } else return RECORD_DOES_NOT_EXIST;
     }
