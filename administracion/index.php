@@ -576,7 +576,7 @@ $app->get('/usuarios', 'authenticateAPIKey', function() use ($app) {
     $pagina = empty($app->request->get('pagina')) ? 0 : $app->request->get('pagina');
     $estado = empty($app->request->get('estado')) ? ESTADO_ACTIVO : $app->request->get('estado');
     $response["error"] = false;
-    $response["usuarios"] = $db->getUsuarios($estado);
+    $response["usuarios"] = $db->getUsuarios($pagina, $estado);
     echoRespnse(200, $response);
 });
 

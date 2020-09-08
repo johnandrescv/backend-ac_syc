@@ -603,10 +603,11 @@ class DbHandler {
         return $response;
     }
 
-    public function getUsuarios($estado = ESTADO_ACTIVO) {
+    public function getUsuarios($pagina, $estado = ESTADO_ACTIVO) {
+        $pagina = $pagina * 100;
         $response = array();
-        $stmt = $this->conn->prepare("SELECT id_usuario FROM usuarios WHERE estado = ? order by id_usuario");
-        $stmt->bind_param("s", $estado);
+        $stmt = $this->conn->prepare("SELECT id_usuario FROM usuarios WHERE estado = ? order by id_usuario limit ?, 100");
+        $stmt->bind_param("ss", $estado, $pagina);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
