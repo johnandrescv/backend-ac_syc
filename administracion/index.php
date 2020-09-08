@@ -465,9 +465,10 @@ $app->post('/usuarios/invitados', function() use ($app) {
     $edad = empty($app->request->post('edad')) ? '' : $app->request->post('edad');
     $correo = empty($app->request->post('correo')) ? '' : $app->request->post('correo');
     $imagen = empty($app->request->post('imagen')) ? '' : $app->request->post('imagen');
+    $telefono = empty($app->request->post('telefono')) ? '' : $app->request->post('telefono');
     $id_tipo = 2;
 
-    $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen, '', '', $edad, $correo);
+    $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen, $telefono, '', '', $edad, $correo);
     if ($res == OPERATION_SUCCESSFUL) {
         $response["error"] = false;
         $response["message"] = "Se ha registrado el invitado exitosamente.";
@@ -497,8 +498,9 @@ $app->post('/usuarios', 'authenticateAPIKey', function() use ($app) {
     $correo = empty($app->request->post('correo')) ? '' : $app->request->post('correo');
     $edad = empty($app->request->post('edad')) ? '' : $app->request->post('edad');
     $imagen = empty($app->request->post('imagen')) ? '' : $app->request->post('imagen');
+    $telefono = empty($app->request->post('telefono')) ? '' : $app->request->post('telefono');
 
-    $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen, '', '', $edad, $correo);
+    $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen, $telefono, '', '', $edad, $correo);
     if ($res == OPERATION_SUCCESSFUL) {
         $response["error"] = false;
         $response["message"] = "Se ha registrado el usuario exitosamente.";

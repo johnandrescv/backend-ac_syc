@@ -252,12 +252,12 @@ $app->post('/proveedor', 'authenticateAPIKey', function() use ($app) {
     $response = array();
     $db = new DbHandler();
     // check for required params
-    verifyRequiredParams(array('dni','nombres'));
+    verifyRequiredParams(array('dni','nombres', 'id_tipo'));
 
     // reading params
     $dni = $app->request->post('dni');
     $nombres = $app->request->post('nombres');
-    $id_tipo = 3;
+    $id_tipo = $app->request->post('id_tipo');;
     $imagen = empty($app->request->post('imagen')) ? '' : $app->request->post('imagen');
     $correo = empty($app->request->post('correo')) ? '' : $app->request->post('correo');
     $edad = empty($app->request->post('edad')) ? '' : $app->request->post('edad');
