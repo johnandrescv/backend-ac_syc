@@ -656,7 +656,7 @@ class DbHandler {
             if($existe === false) {
                 $response = $this->createUsuario($socio["dni"], $socio["nombres"], 1, 'http://10.22.8.42/api/uploads/image.php?nombre='.$socio["dni"].'.JPG', '', $socio["status"], $socio["parentesco"], '', '', $socio["codigo"]);
             }else{
-                $this->activateUser($existe["id_usuario"]);
+                $this->activateUser($existe["id_usuario"], $socio["status"]);
             }
         }
         return true;
@@ -674,10 +674,10 @@ class DbHandler {
         } else return false;
     }
 
-    public function activateUser($id) {
+    public function activateUser($id, $status) {
         $response = array();
-        $stmt = $this->conn->prepare("UPDATE usuarios SET estado = 'A' WHERE id_usuario = ?");
-        $stmt->bind_param("s", $id);
+        $stmt = $this->conn->prepare("UPDATE usuarios SET socio_status = ?, estado = 'A' WHERE id_usuario = ?");
+        $stmt->bind_param("ss", $status, $id);
         $result = $stmt->execute();
         //printf("Error: %s.\n", $stmt->error);
         $stmt->close();
