@@ -799,8 +799,8 @@ class DbHandler {
         $stmt->execute();
         $result = $stmt->get_result();
         if ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-            $last = $this->getLastEntradaHistorialByUsuario($res["id_autorizacion"]);
             $res = $this->getInvitacionesById($row["id_invitacion"]);
+            $last = $this->getLastEntradaHistorialByUsuario($res["id_autorizacion"]);
             $res['socio'] = $this->getUsuarioById($res["id_autorizacion"]);
             $res['socio_validacion'] = ($last == RECORD_DOES_NOT_EXIST) ? false : $last;
             $res['open'] = ($today == $res['fecha_caducidad']) ? true : false;
