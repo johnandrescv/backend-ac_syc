@@ -1085,7 +1085,7 @@ class DbHandler {
         curl_setopt($cURLConnection, CURLOPT_URL, $acceso['url']);
         curl_setopt($cURLConnection, CURLOPT_RETURNTRANSFER, true);
         curl_exec($cURLConnection);
-        if (!curl_errno($ch)) {
+        if (!curl_errno($cURLConnection)) {
             curl_close($cURLConnection);
             return false;
         }
