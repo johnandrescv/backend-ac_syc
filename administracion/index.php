@@ -756,8 +756,8 @@ $app->post('/open_garita', 'authenticateAPIKey', function() use ($app) {
     verifyRequiredParams(array('id_acceso'));
     // reading params
     $id_acceso = $app->request->post('id_acceso');
-    $response = $db->openGarita($id_acceso, $user_id);
-    if($response) {
+    $resp = $db->openGarita($id_acceso, $user_id);
+    if($resp) {
         $response["error"] = false;
         $response["message"] = 'Acceso correcto';
         echoRespnse(200, $response);
