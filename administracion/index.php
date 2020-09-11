@@ -582,6 +582,35 @@ $app->get('/usuarios', 'authenticateAPIKey', function() use ($app) {
     echoRespnse(200, $response);
 });
 
+$app->post('/proveedor', 'authenticateAPIKey', function() use ($app) {
+    $response = array();
+    $db = new DbHandler();
+    // check for required params
+    verifyRequiredParams(array('dni', 'nombres', 'id_tipo'));
+
+    // reading params
+    $dni = $app->request->post('dni');
+    $nombres = $app->request->post('nombres');
+    $id_tipo = $app->request->post('id_tipo');;
+    $imagen = empty($app->request->post('imagen')) ? '' : $app->request->post('imagen');
+    $correo = empty($app->request->post('correo')) ? '' : $app->request->post('correo');
+    $edad = empty($app->request->post('edad')) ? '' : $app->request->post('edad');
+
+    $res = $db->createUsuario($dni, $nombres, $id_tipo, $imagen, '', '', $edad, $correo);
+    if ($res == OPERATION_SUCCESSFUL) {
+        $response["error"] = false;
+        $response["message"] = "Se ha registrado el proveedor exitosamente.";
+        echoRespnse(201, $response);
+    } else if ($res == OPERATION_FAILED) {
+        $response["error"] = true;
+        $response["message"] = $GLOBALS["request_error"];
+        echoRespnse(500, $response);
+    } else if ($res == RECORD_DUPLICATED) {
+        $response["error"] = true;
+        $response["message"] = "El proveedor ya se encuentra registrado.";
+        echoRespnse(400, $response);
+    }
+});
 /* 
 ------------- 
 ---------- INVITACIONES
