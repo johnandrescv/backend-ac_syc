@@ -1081,7 +1081,7 @@ class DbHandler {
 
     public function openGarita($id_acceso, $id_administrador) {
         $acceso = $this->getAccesoById($id_acceso);
-        $cURLConnection = curl_init();
+        /* $cURLConnection = curl_init();
         curl_setopt($cURLConnection, CURLOPT_URL, $acceso['url']);
         curl_setopt($cURLConnection, CURLOPT_RETURNTRANSFER, true);
         curl_exec($cURLConnection);
@@ -1089,7 +1089,7 @@ class DbHandler {
             curl_close($cURLConnection);
             return false;
         }
-        curl_close($cURLConnection);
+        curl_close($cURLConnection); */
         $this->createLog($id_administrador, $id_acceso);
         return true;
     }
