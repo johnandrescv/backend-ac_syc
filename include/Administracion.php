@@ -986,6 +986,27 @@ class DbHandler {
         }
         return $response;
     }
+
+    public function getDownloadHistorialByDate($fecha_inicio, $fecha_fin, $administrador, $acceso, $tipo_usuario) {
+        $response = array();
+        $administrador = $administrador? " AND h.id_administrador = $administrador " : "";
+        $acceso = $acceso? " AND h.id_acceso = $acceso " : "";
+        if($tipo_usuario){
+            $stmt = $this->conn->prepare("SELECT h.id_historial FROM historial h, usuarios u WHERE h.id_usuario = u.id_usuario AND u.id_tipo = ? AND CAST(h.fecha_creacion AS DATE) BETWEEN CAST(? AS DATE) AND CAST(? AS DATE) $administrador $acceso ORDER BY h.fecha_creacion desc");
+            $stmt->bind_param("sss", $tipo_usuario, $fecha_inicio, $fecha_fin);
+        }else{
+            $stmt = $this->conn->prepare("SELECT h.id_historial FROM historial h WHERE CAST(h.fecha_creacion AS DATE) BETWEEN CAST(? AS DATE) AND CAST(? AS DATE) $administrador $acceso ORDER BY h.fecha_creacion desc");
+            $stmt->bind_param("ss", $fecha_inicio, $fecha_fin);
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+            $res = $this->getHistorialById($row["id_historial"]);
+            if ($res != RECORD_DOES_NOT_EXIST)
+				$response[] = $res;
+        }
+        return $response;
+    }
     /* 
     ------------- 
     ---------- LOGS DE PUERTA
