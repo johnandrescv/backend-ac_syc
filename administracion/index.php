@@ -726,18 +726,24 @@ $app->post('/historial', 'authenticateAPIKey', function() use ($app) {
 $app->get('/historial', 'authenticateAPIKey', function() use ($app) {
     $response = array();
     $db = new DbHandler();
-    verifyRequiredParams(array('fecha_inicio','fecha_fin','pagina'));
+    verifyRequiredParams(array('fecha_inicio','fecha_fin'));
     global $user_id;
 
     $fecha_inicio = $app->request->get('fecha_inicio');
     $fecha_fin = $app->request->get('fecha_fin');
-    $pagina = $app->request->get('pagina');
+    $pagina = empty($app->request->get('pagina')) ? $app->request->get('pagina') : false;
     $administrador = empty($app->request->get('administrador')) ? false : $app->request->get('administrador');
     $acceso = empty($app->request->get('acceso')) ? false : $app->request->get('acceso');
     $tipo_usuario = empty($app->request->get('tipo_usuario')) ? false : $app->request->get('tipo_usuario');
 
+    if (!$pagina) {
+        $data = $db->getDownloadHistorialByDate($fecha_inicio, $fecha_fin, $pagina, $administrador, $acceso, $tipo_usuario);
+    } else {
+        $data = $db->getHistorialByDate($fecha_inicio, $fecha_fin, $pagina, $administrador, $acceso, $tipo_usuario);
+    }
+
     $response["error"] = false;
-    $response["registros"] = $db->getHistorialByDate($fecha_inicio, $fecha_fin, $pagina, $administrador, $acceso, $tipo_usuario);
+    $response["registros"] = $data;
     echoRespnse(200, $response);
 });
 
