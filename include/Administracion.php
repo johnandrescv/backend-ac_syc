@@ -530,7 +530,7 @@ class DbHandler {
         if (!$this->isUsuarioExists($dni, $id)) {
             $response = array();
             $stmt = $this->conn->prepare("UPDATE usuarios SET nombres = ?, id_tipo = ?, edad = ?, correo = ? WHERE id_usuario = ?");
-            $stmt->bind_param("ssss", $nombres, $edad, $correo, $id_tipo);
+            $stmt->bind_param("sssss", $nombres, $id_tipo, $edad, $correo, $id);
             $result = $stmt->execute();
             //printf("Error: %s.\n", $stmt->error);
             $stmt->close();
