@@ -654,7 +654,7 @@ class DbHandler {
         foreach($socios as $socio) {
             $existe = $this->searchSociosByDNI($socio["dni"]);
             if($existe === false) {
-                $response = $this->createUsuario($socio["dni"], $socio["nombres"], 1, 'http://10.22.8.42/api/uploads/image.php?nombre='.$socio["dni"].'.JPG', '', $socio["status"], $socio["parentesco"], '', '', $socio["codigo"]);
+                $response = $this->createUsuario($socio["dni"], $socio["nombres"], 1, 'http://190.95.224.172:8888/api/uploads/image.php?nombre='.$socio["dni"].'.JPG', '', $socio["status"], $socio["parentesco"], '', '', $socio["codigo"]);
             }else{
                 $this->activateUser($existe["id_usuario"], $socio["status"]);
             }
