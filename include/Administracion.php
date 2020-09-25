@@ -619,8 +619,13 @@ class DbHandler {
     }
 
     public function searchUsuariosByName($texto) {
+        $words = explode(' ', $texto);
         $response = array();
-        $stmt = $this->conn->prepare("SELECT id_usuario FROM usuarios WHERE nombres LIKE '%".$texto."%'");
+        $likequery = array();
+        foreach($words as $word) {
+            $likequery[] = 'nombres like "%'.$word.'%"';
+        }
+        $stmt = $this->conn->prepare("SELECT id_usuario FROM usuarios WHERE ".join(" AND ",$likequery));
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
